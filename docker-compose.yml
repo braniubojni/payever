@@ -1,0 +1,36 @@
+version: '3'
+services:
+  mongo-db:
+    image: mongo:4.4.4
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    ports:
+      - 27020:27017
+    command: --wiredTigerCacheSizeGB 1.5
+  test-mongo-db:
+    image: mongo:4.4.4
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admintest
+      - MONGO_INITDB_ROOT_PASSWORD=admintest
+    ports:
+      - 27055:27017
+    command: --wiredTigerCacheSizeGB 1.5
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    volumes:
+      - /var/lib/rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASSWORD=admin
+      - RABBITMQ_HOST=localhost:5672
+      - RABBITMQ_QUEUE_NAME=email-subscribers
